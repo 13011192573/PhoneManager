@@ -1,0 +1,87 @@
+{% extends "myadmin/base.html" %}
+
+
+{% block mainbody %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        机器管理
+        <small>测试机管理后台</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li class="active"></li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box" >
+            <div class="box-header">
+                <h2 class="box-title"> <span class="glyphicon glyphicon-calendar" aria-hidden="true">修改机器信息</h2>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" action="{% url 'myadmin_phone_update' phone.id%}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="oldpicname" class="input-xlarge" id="input01" value="{{phone.picname}}"/>
+
+              {% csrf_token %}
+              <div class="box-body" align="center" style="background: rgba(255, 90, 77, 0.26)">
+
+            <div class="control-group" >
+                <label class="control-label" for="input01">机器名</label>
+                <div class="controls">
+                    <input type="text" name="name" class="input-xlarge" id="input01" value="{{ phone.name }}" />
+                </div>
+            </div>
+
+             <div class="control-group" >
+                <label class="control-label" for="input01">机器图片</label>
+                <div class="controls">
+                    <input type="file" name="pic" class="input-xlarge" id="input01"/>
+                    <img src="/static/myadmin/img/s_{{phone.picname}}" width="70px">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="input01">系统</label>
+                <div class="controls">
+                    <input type="radio" name="sys" class="input-xlarge" id="input01" value="1"
+                    {% if phone.sys == 1 %}checked{% endif %} /> ios
+                    <input type="radio" name="sys" class="input-xlarge" id="input01" value="2"
+                    {% if phone.sys == 2 %}checked{% endif %} /> Android
+
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" for="input01">系统版本</label>
+                <div class="controls">
+                    <input type="text" name="sysnum" class="input-xlarge" id="input01" value="{{ phone.sysnum }}" />
+                </div>
+            </div>
+
+             <div class="control-group" >
+                <label class="control-label" for="input01">资产编号</label>
+                <div class="controls">
+                    {% if phone.phonenum == null%}
+                    <input type="text" name="phonenum" class="input-xlarge" id="input01" value="" />
+                    {% else %}
+                     <input type="text" name="phonenum" class="input-xlarge" id="input01" value="{{phone.phonenum}}" />
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-actions" style="margin-top: 20px">
+                <button type="submit" class="btn btn-primary">保存</button> <button type="reset" class="btn">重置</button>
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+{% endblock %}

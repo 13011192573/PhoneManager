@@ -1,0 +1,162 @@
+
+{% extends "myadmin/base.html" %}
+
+
+{% block mainbody %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        测试机管理
+        <small>测试机列表</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li class="active">测试机管理</li>
+      </ol>
+    </section>
+
+ <form class="content-header" action="{% url 'myadmin_phone_index' 1%}" method="get" style="background: rgba(241, 82, 116, 0.26)">
+  <label>关键字：</label>
+  <input type="text" name="phonekeyword" value="{{request.GET.phonekeyword}}" class="input-small" placeholder="手机名称">
+  <label>关键字：</label>
+  <input type="text" name="userkeyword" value="{{request.GET.userkeyword}}" class="input-small" placeholder="当前用户">
+
+  <label> &nbsp; 状态：</label>
+  <select name="state" class="span1">
+      <option value="">全部</option>
+      <option value="1" {% if request.GET.state == '1' %}selected{% endif %}><span style="color: green">空闲</span></option>
+      <option value="2" {% if request.GET.state == '2' %}selected{% endif %}><span style="color: red">使用中</span></option>
+  </select>
+
+     <label> &nbsp; 系统：</label>
+  <select name="sys" class="span1">
+      <option value="">全部</option>
+      <option value="1" {% if request.GET.sys == '1' %}selected{% endif %}><span style="color: green">ios</span></option>
+      <option value="2" {% if request.GET.sys == '2' %}selected{% endif %}><span style="color: red">Android</span></option>
+  </select>
+  <button type="submit" class="btn" style="margin-left: 40px;margin-right: 40px">搜索</button>
+  <a href="{% url 'myadmin_phone_index' 1%}" class="btn">全部</a>
+</form>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"><i class="fa fa-calendar"></i> 测试机信息表</h3>
+
+              <div class="box-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+               <tr>
+                                    <th>id</th>
+                                    <th>机器名</th>
+                                    <th>机器图片</th>
+                                    <th>系统</th>
+                                    <th>系统版本</th>
+                                    <th>当前状态</th>
+                                    <th>当前用户</th>
+									<th>借用时间</th>
+                                    <th>归还时间</th>
+                                    <th>归还人</th>
+                                    <th>操作</th>
+							</tr>
+               		    {% for vo in phonelist %}
+
+							<tr>
+								<td>{{vo.id}}</td>
+								<td>{{vo.name}}</td>
+								<td><img src="/static/myadmin/img/s_{{vo.picname}}" width=""></td>
+								<td>{% if vo.sys == 1 %}ios{% elif vo.sys == 2 %}Android{% else %}未知系统{% endif %}</td>
+								<td>{{vo.sysnum}}</td>
+								<td>{% if vo.state == 1 %}<span style="color: green">空闲</span>{% elif vo.state == 2 %}<span style="color: red">使用中</span>{% else %}未知{% endif %}</td>
+                                <td>
+                                    {% if vo.user == ''%}
+                                    无人使用
+                                    {% else %}
+                                    {{vo.user}}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if vo.create_at == None%}
+                                    {% else %}
+                                    {{vo.create_at}}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if vo.update_at == None%}
+                                    {% else %}
+                                    {{vo.update_at}}
+                                    {% endif %}
+
+                                </td>
+                                <td>
+                                    {% if vo.backuser == None%}
+                                    无人归还
+                                    {% else %}
+                                    {{vo.backuser}}
+                                    {% endif %}
+
+                                </td>
+
+								<td width="10%">
+                                    {% if vo.state == 1%}
+                                    <button type="button" onclick="doBorrow('{% url 'myadmin_phone_borrow' vo.id%}')" class="btn btn-success btn-xs">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 借用</button>
+                                    {% endif %}
+                                    {% if vo.state == 2%}
+                                    <button type="button" onclick="doBack('{% url 'myadmin_phone_back' vo.id%}')" class="label label-warning">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 归还</button>
+                                    {% endif %}
+
+
+                                </td>
+
+
+
+							</tr>
+                        {% endfor %}
+              </table>
+            </div>
+      <div class="box-footer clearfix">
+
+             <ul class="pagination pagination-sm no-margin pull-right">
+        <li>
+            <a href="{% url 'myadmin_phone_index' pIndex|add:-1 %}?{{ mywhere|join:'&' }}">&laquo;</a>
+        </li>
+        {% for p in plist %}
+        <li {% if pIndex == p %}class="active"{% endif %}>
+            <a href="{% url 'myadmin_phone_index' p %}?{{ mywhere|join:'&' }}">{{p}}</a>
+        </li>
+        {% endfor %}
+        <li>
+            <a href="{% url 'myadmin_phone_index' pIndex|add:1 %}?{{ mywhere|join:'&' }}">&raquo;</a>
+        </li>
+
+    </ul>
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+
+    </section>
+
+
+
+
+
+
+{% endblock %}

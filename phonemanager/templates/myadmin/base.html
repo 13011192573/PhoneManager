@@ -1,0 +1,292 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 2 | Starter</title>
+  <!-- 支持响应式布局 -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="{% static 'myadmin/bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+  <!-- 象形字体 -->
+  <link rel="stylesheet" href="{% static 'myadmin/bower_components/font-awesome/css/font-awesome.min.css' %}">
+  <!-- 图标 -->
+  <link rel="stylesheet" href="{% static 'myadmin/bower_components/Ionicons/css/ionicons.min.css' %}">
+  <!-- 主题风格样式 -->
+  <link rel="stylesheet" href="{% static 'myadmin/dist/css/AdminLTE.min.css' %}">
+  <!-- AdminLTE 皮肤.这里选择的是skin-blue样式，我们还可以有其他皮肤可以选择. -->
+  <link rel="stylesheet" href="{% static 'myadmin/dist/css/skins/skin-blue.min.css' %}">
+  <!-- 兼容IE9以下浏览器 -->
+  <!--[if lt IE 9]>
+  <script src="{% static 'myadmin/local/js/html5shiv.min.js' %}"></script>
+  <script src="{% static 'myadmin/local/js/respond.min.js' %}"></script>
+  <![endif]-->
+  <!-- Google Font -->
+  <link rel="stylesheet" href="{% static 'myadmin/local/css/google_fonts.css' %}">
+   <style type="text/css">
+        *{
+            margin:0;
+            padding:0;
+            font-family:"微软雅黑";
+            font-size:15px;
+
+        }
+
+    </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <!-- Main Header 主体页头 -->
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <!-- 侧栏迷你徽标 mini 50x50 pixels -->
+      <span class="logo-mini"><b></b></span>
+      <!-- 常规状态标志和移动设备标志 -->
+      <span class="logo-lg"><b>测试机管理系统</b></span>
+    </a>
+
+    <!-- Header Navbar 首部导航栏 -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button 侧边栏切换按钮 -->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">切换导航</span>
+      </a>
+      <!-- 右栏菜单 -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+
+          <li class="dropdown user user-menu">
+            <!-- Menu Toggle Button -->
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- The user image in the navbar-->
+              <img src="{% static 'myadmin/dist/img/user2-160x160.jpg' %}" class="user-image" alt="User Image">
+              <!-- hidden-xs hides the username on small devices so only the image appears. -->
+              <span class="hidden-xs">{{request.session.adminuser.name}}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- The user image in the menu -->
+              <li class="user-header">
+                <img src="{% static 'myadmin/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+
+                <p>
+                  {{request.session.adminuser.name}} - 管理员
+                  <small>{{request.session.adminuser.create_at}}加入</small>
+                </p>
+              </li>
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">个人信息</a>
+                </div>
+                <div class="pull-right">
+                  <a href="{% url 'myadmin_logout' %}" class="btn btn-default btn-flat">退 出</a>
+                <!--<a href="#" class="btn btn-default btn-flat">退 出</a>-->
+                </div>
+              </li>
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 左侧柱。包含徽标和边栏 -->
+  <aside class="main-sidebar">
+
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="{% static 'myadmin/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>{{request.session.adminuser.name}} . 管理员</p>
+          <!-- Status -->
+          <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">主要导航</li>
+        <!-- 导航列表，你可以自行更改图标 -->
+        <li class="active"><a href="{% url 'myadmin_index' %}"><i class="fa fa-home"></i> <span>首页</span></a></li>
+        
+        <li><a href="{% url 'myadmin_phone_index' 1%}"><i class="fa fa-sitemap"></i> <span>测试机浏览</span></a></li>
+        <li><a href="{% url 'myadmin_managephone_index' 1%}"><i class="fa fa-sitemap"></i> <span>测试机管理</span></a></li>
+        <li class="treeview">
+          <a href="#"><i class="fa fa-sitemap"></i> <span>用户管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'myadmin_users_index' 1%}"> <i class="fa fa-users"></i> 用户浏览</a></li>
+            <li><a href="{% url 'myadmin_users_add' %}"> <i class="fa fa-user"></i> 用户添加</a></li>
+          </ul>
+        </li>
+
+        <li><a href="{% url 'myadmin_usersa_index' 1 %}"><i class="fa fa-user"></i> <span>用户使用记录</span></a></li>
+
+      </ul>
+      <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- 主体开始 -->
+    {% block mainbody %}
+    {% endblock %}
+    <!-- 主体结束 -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="pull-right hidden-xs">
+
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2019 <a href="#"></a>.</strong> 版权所有
+  </footer>
+
+  <!-- 添加侧栏的背景。必须放置此处紧接在控制侧边栏之后 -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<!-- edu-model提示框模板 -->
+<div id="edu-alert" class="modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h5 class="modal-title"><i class="fa fa-exclamation-circle"></i> [Title]</h5>
+      </div>
+      <div class="modal-body small">
+        <p>[Message]</p>
+      </div>
+      <div class="modal-footer" >
+        <button type="button" class="btn btn-primary ok" data-dismiss="modal">[BtnOk]</button>
+        <button type="button" class="btn btn-default cancel" data-dismiss="modal">[BtnCancel]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- edu-model-end -->
+
+<!-- REQUIRED JS SCRIPTS -->
+  
+<!-- jQuery 3 -->
+<script src="{% static 'myadmin/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'myadmin/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'myadmin/dist/js/adminlte.min.js' %}"></script>
+
+<script src="{% static 'myadmin/dist/js/edu-modal-alert-confirm.js' %}"></script>
+
+<!-- 此处可以添加SimLoopl和FastClick插件，用于增强用户体验。 -->
+
+<script type="text/javascript">
+  function doDelete(url){
+    Modal.confirm({
+        msg: "确定要删除吗？",
+        title: ' 信息提示',
+        btnok: '确定',
+        btncl:'取消'
+      }).on(function (e){
+        if(e){
+          window.location=url
+        }
+      });
+  }
+
+  function doBorrow(url) {
+     Modal.confirm({
+        msg: "用完及时释放哦",
+        title: '确定要借用吗？',
+        btnok: '好的',
+        btncl:'哼！不用了'
+      }).on(function (e){
+        if(e){
+          window.location=url
+        }
+      });
+  }
+
+  function doBack(url) {
+     Modal.confirm({
+        msg: "用完不放回机架，良心痛不？",
+        title: '确定归还嘛？',
+        btnok: '放回机架',
+        btncl:'不痛'
+      }).on(function (e){
+        if(e){
+          window.location=url
+        }
+      });
+  }
+
+  //    窗口大小
+    var oPageX=window.screen.width;
+    var oPageY=window.screen.height;
+    var aSnow=[];
+//    雪花模板
+    function snow(x,y,xspeed,yspeed,xsin,size){//x水平位置,y垂直位置,xspeed水平步距,yspeed垂直步距,xsin振幅,size雪花大小
+        this.node=document.createElement('div');
+        this.x=x;
+        this.y=y;
+        this.xspeed=xspeed;
+        this.yspeed=yspeed;
+        this.xsin=xsin;
+        this.size=size;
+        this.createSnow=function(){
+            this.node.style.position='absolute';
+            this.node.style.top=this.y+'px';
+            this.node.style.left=this.x+'px';
+//            this.node.this.node.innerHTML='*';
+            this.node.innerHTML='借完记得还好不好呀🌹😙';
+
+            document.body.appendChild(this.node);
+        };
+        this.createSnow();
+        this.snowMove=function(){
+            this.node.style.top=parseInt(this.node.style.top)+this.yspeed+'px';//垂直方向运动
+            this.node.style.left=parseInt(this.node.style.left)+this.xsin*Math.sin(this.xspeed)+'px';
+            this.node.style.fontSize=this.size+'px';
+//            this.node.style.color='rgb('+Math.ceil(Math.random()*255)+','+Math.ceil(Math.random()*255)+','+Math.ceil(Math.random()*255)+')';
+        };
+    }
+//    创建雪花
+    function createSnow(){
+        aSnow.push(new snow(Math.random()*oPageX,-50,0.02+Math.random()/10,1+Math.random(),Math.random()*50,20+Math.random()*30));
+    }
+    setInterval(createSnow,6000);//一秒钟创建一个雪花
+//    雪花移动函数
+    function snowMove(){
+        for(var j=0;j<aSnow.length;j++){
+            aSnow[j].snowMove();
+            if(parseInt(aSnow[j].node.style.top)>oPageY || parseInt(aSnow[j].node.style.left)>oPageX){
+                aSnow[j].node.parentNode.removeChild(aSnow[j].node);
+                aSnow.splice(j,1);
+            }
+        }
+    }
+    setInterval(snowMove,10);
+
+</script>
+{% block loadjavascript %}
+<!-- 此处可加载独立的javascript程序 -->
+{% endblock %}
+</body>
+</html>

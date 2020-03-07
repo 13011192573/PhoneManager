@@ -1,0 +1,67 @@
+{% extends "myadmin/base.html" %}
+
+
+{% block mainbody %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        用户管理
+        <small>测试机用户管理后台</small>
+      </h1>
+      <ol class="breadcrumb">
+<!--        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>-->
+<!--        <li class="active">店铺管理</li>-->
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box" >
+            <div class="box-header">
+                <h2 class="box-title"> <span class="glyphicon glyphicon-calendar" aria-hidden="true">修改用户信息</h2>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" action="{% url 'myadmin_users_update' user.id%}" method="post" enctype="multipart/form-data">
+
+
+              {% csrf_token %}
+              <div class="box-body" align="center" style="background: rgba(255, 90, 77, 0.26)">
+            <div class="control-group" >
+                <label class="control-label" for="input01" style="margin-top: 20px;">账号：</label>
+                <div class="controls">
+                    {{ user.username }}
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label" for="input01">真实姓名：</label>
+                <div class="controls">
+                    <input type="text" name="name" class="input-xlarge" id="input01" value="{{ user.name }}" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="input01">状态：</label>
+                <div class="controls">
+                    <input type="radio" name="state" class="input-xlarge" id="input01" value="0"
+                    {% if user.state == 0 %}checked{% endif %} /> 管理员
+                    <input type="radio" name="state" class="input-xlarge" id="input01" value="1"
+                    {% if user.state == 1 %}checked{% endif %} /> 普通用户
+                    <input type="radio" name="state" class="input-xlarge" id="input01" value="2"
+                    {% if user.state == 2 %}checked{% endif %} /> 禁用
+                </div>
+            </div>
+            <div class="form-actions" style="margin-top: 20px">
+                <button type="submit" class="btn btn-primary">保存</button> <button type="reset" class="btn">重置</button>
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+{% endblock %}
